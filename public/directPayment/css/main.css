@@ -1,0 +1,376 @@
+* {
+    padding: 0;
+    margin: 0 auto;
+}
+
+body {
+    font-size: .3rem;
+    font-family: "Helvetica", 'Microsoft Yahei';
+}
+
+img {
+    vertical-align: middle;
+}
+
+.left-box {
+    float: left;
+}
+
+.right-box {
+    float: right;
+}
+
+.main {
+    padding: .2rem;
+}
+
+
+/*头部*/
+
+.main header {
+    text-align: center;
+}
+
+.main header .logo {
+    text-align: left;
+    height: .5rem;
+}
+
+.main header .logo img {
+    height: 100%;
+}
+
+.main header .title {
+    font-size: .4rem;
+}
+
+.main header .title span {
+    font-size: .22rem;
+}
+
+.main header .device-mac {
+    font-size: .22rem;
+    padding-bottom: .1rem;
+}
+
+
+/*头部结束*/
+
+
+/*套餐部分*/
+
+.main .fee-title {
+    border-top-left-radius: .2rem;
+    border-top-right-radius: .2rem;
+    position: relative;
+    text-align: center;
+    padding: .1rem;
+}
+
+.main .fee-title img {
+    position: absolute;
+    height: 1rem;
+    top: -0.4rem;
+    left: .2rem;
+}
+
+.main .price-coin {
+    position: absolute;
+    right: .1rem;
+    font-size: .2rem;
+    bottom: .1rem;
+}
+
+.main .fee-content {
+    height: 3.5rem;
+    border-bottom-left-radius: .2rem;
+    border-bottom-right-radius: .2rem;
+    padding: .3rem;
+    box-sizing: border-box;
+}
+
+.main .fee-box {
+    width: 28%;
+    text-align: center;
+    margin-right: 7.5%;
+    height: 1.5rem;
+}
+
+.main .fee-box:nth-child(3n) {
+    margin-right: 0;
+}
+
+.main .fee-box-main {
+    border-radius: .1rem;
+    padding: .1rem 0;
+    box-sizing: border-box;
+    position: relative;
+    pointer-events: none;
+}
+
+.main .fee-box-main img {
+    display: none;
+    position: absolute;
+    top: -.15rem;
+    right: -.15rem;
+    width: .4rem;
+}
+
+.main .active .fee-box-main img {
+    display: block;
+}
+
+.main .fee-text {
+    font-size: .2rem;
+    padding: .05rem;
+}
+
+.main .fee-box-main .price {
+    font-size: .35rem;
+}
+
+.main .fee-box-main .coin {
+    font-size: .25rem;
+}
+
+.main .bottom-text {
+    font-size: .2rem;
+    text-align: center;
+    padding: .1rem;
+}
+
+
+/*套餐部分 end*/
+
+
+/*支付信息*/
+
+.main .pay {
+    height: 1.8rem;
+    border-radius: .5rem;
+    box-sizing: border-box;
+    border-width: .1rem;
+    border-style: solid;
+    margin-top: .5rem;
+    margin-bottom: .15rem;
+    font-size: .25rem;
+}
+
+.main .pay-line {
+    line-height: .8rem;
+    padding-left: .2rem;
+    overflow: auto;
+    zoom: 1;
+}
+
+.main .pay-left {
+    width: 52%;
+    text-align: center;
+}
+
+.main .ope-box {
+    width: .4rem;
+    height: .4rem;
+    padding: .2rem 0;
+}
+
+.main .ope-box img {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.main .coin-num-text {
+    font-size: .2rem;
+    margin-left: .1rem;
+    line-height: .4rem;
+    margin-top: .3rem;
+}
+
+.main .coin-num {
+    width: .8rem;
+}
+
+.main .num-box {
+    font-size: .35rem;
+    font-weight: 600;
+    line-height: .45rem;
+    padding-top: .15rem;
+}
+
+.main .pay-right {
+    width: 48%;
+    height: 100%;
+    position: relative;
+}
+
+.main .pay-btn {
+    position: absolute;
+    top: -0.2rem;
+}
+
+@font-face {
+    font-family: DS_DIGIB;
+    /*这里是说明调用来的字体名字*/
+    src: url('../font/DS-DIGIB.ttf');
+    /*这里是字体文件路径*/
+}
+
+.main .pay-btn p {
+    font-family: DS_DIGIB;
+    position: absolute;
+    top: .25rem;
+    right: .35rem;
+    font-size: .3rem;
+}
+
+.main .pay-right img {
+    width: 110%;
+}
+
+
+/*支付信息 end*/
+
+
+/*页脚*/
+
+.main footer {
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+}
+
+.main footer .btn {
+    width: 33.333%;
+    text-align: center;
+    font-size: .22rem;
+    padding: .1rem 0;
+}
+
+.win {
+    display: none;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+.center-win-main {
+    position: absolute;
+    top: 18%;
+    left: 0;
+    right: 0;
+    width: 85%;
+    margin: 0 auto;
+}
+
+.center-win-main .win-title {
+    border-top-left-radius: .2rem;
+    border-top-right-radius: .2rem;
+    padding: .2rem;
+    text-align: center;
+    font-size: .35rem;
+    position: relative;
+}
+.center-win-main .win-title .close{
+  position: absolute;
+  width: .9rem;
+  height: .9rem;
+  line-height: .9rem;
+  top:0;
+  left: 0;
+}
+.center-win-main .win-content {
+    max-height: 5.5rem;
+    min-height: 1rem;
+    overflow: scroll;
+    border-bottom-left-radius: .2rem;
+    border-bottom-right-radius: .2rem;
+    padding: 0 0.3rem;
+}
+
+@media screen and (min-width: 500px) and (max-height: 414px) {
+    .center-win-main {
+        top: 10%;
+    }
+    .win-content {
+        max-height: 2rem;
+    }
+}
+
+.center-win-main .pay-info {
+    overflow: auto;
+    zoom: 1;
+    padding-top: .3rem;
+}
+
+.center-win-main .pay-info-text {
+    text-align: justify;
+    margin-top: .3rem;
+    border-top-width: 1px;
+    border-top-style: solid;
+    font-size: .25rem;
+    line-height: .35rem;
+    padding: .2rem 0;
+}
+
+.center-win-main .pay-btn {
+    text-align: center;
+    padding: .2rem;
+    border-radius: .2rem;
+    margin-bottom: .3rem;
+    letter-spacing: .05rem;
+}
+.bottom-win-main{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+.bottom-win-main .win-title{
+    padding: .2rem;
+    font-size: .35rem;
+    text-align: center;
+}
+.bottom-win-main .win-content{
+    min-height: 1rem;
+}
+.bottom-win .btn{
+    text-align: center;
+    padding: .2rem;
+    font-size: .35rem;
+}
+.loading-win{
+    display: none;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+.loading-win{
+    position: absolute;
+    top: 25%;
+    left: 0;
+    right: 0;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: .3rem;
+    background: rgba(0, 0, 0,.8);
+    text-align: center;
+}
+.loading-img{
+    width: 1.2rem;
+    height: 1.2rem;
+    padding: .3rem .2rem;
+}
+.loading-img img{
+    width: 90%;
+}
+.msg{
+    padding: .3rem 0;
+    line-height: .4rem;
+    text-align: justify;
+}

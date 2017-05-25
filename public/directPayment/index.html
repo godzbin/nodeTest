@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, height=device-height ,initial-scale=1, maximum-scale=1, user-scalable=0" name="viewport"
+    id="metaViewPort" />
+  <title>奥付云</title>
+  <link rel="stylesheet" href="./css/main.css">
+  <link rel="stylesheet" href="./css/theme.css">
+  <script>
+    function setWidth() {
+      var width = document.documentElement.clientWidth;
+      var height = document.documentElement.clientHeight;
+      var new_width = 0;
+      if (width < height) {
+        new_width = width * (1 - (width / height - 375 / 590));
+      } else {
+        new_width = width;
+      }
+      var fontSize = new_width / 6.4;
+      document.documentElement.style.fontSize = fontSize + "px";
+    }
+    setWidth();
+    window.onresize = function () {
+      setWidth();
+    };
+  </script>
+</head>
+
+<body class="theme-color font-color">
+  <div class="main">
+    <!--头部-->
+    <header>
+      <div class="logo"><img src="./images/blue_logo.png" alt=""></div>
+      <div class="title">直接上币支付<span>(限本机用)</span></div>
+      <div class="device-mac">设备编号：<span class="device-mac-value">11111</span></div>
+    </header>
+    <!--套餐-->
+    <section class="fee-main">
+      <div class="fee-title fee-title-color">
+        <img src="./images/blue_coin_machine.png" alt="">
+        <p>请选择<span class="highlight-color">本机上币</span>套餐</p>
+        <div class="price-coin">
+          *<span class="price" id="coinPrice">1</span>元/<span class="coin" id="coinNum">1</span>币/次
+        </div>
+      </div>
+      <div class="fee-content fee-content-color" id="feeList">
+        
+      </div>
+      <div class="bottom-text">*仅在本机使用 直接上币</div>
+    </section>
+    <!--投币内容部分-->
+    <section>
+      <div class="pay pay-color pay-border fee-title-color">
+        <div class="pay-left left-box">
+          <div class="coin pay-line">
+            <div class="left-box">币数：</div>
+            <div class="left-box ope-box minus"><img src="./images/blue_minus.png" alt="-"></div>
+            <div class="left-box coin-num num-box num-color num-border"><span id="feeCoin">1</span></div>
+            <div class="left-box ope-box puls"><img src="./images/blue_plus.png" alt="+"></div>
+            <div class="left-box coin-num-text">币</div>
+          </div>
+          <div class="price pay-line left-box">支付金额：<span class="num-box num-color"><span class="price-value" id="feePrice"></span >元</span></div>
+        </div>
+        <div class="pay-right right-box">
+          <div class="btn pay-btn " id="payBtn">
+            <img src="./images/blue_confirm_button.png" alt="">
+            <p class="red-color price-value-ele" id="feePriceEle">01</p>
+          </div>
+        </div>
+      </div>
+      <div class="bottom-text">*若支付成功1分钟内无上币，系统将于30分钟内自动退款</div>
+    </section>
+    <footer>
+      <div class="btn left-box">关于奥付云</div>
+      <div class="btn left-box">消费记录</div>
+      <div class="btn left-box" id="complaintWinBtn" path="./complaint.html">客服申述</div>
+    </footer>
+  </div>
+  <!--确认支付-->
+  <div class="win center-win" id="confirmPayWin">
+    <div class="center-win-main">
+      <div class="win-title">
+        <div class="close">X</div>
+        确认支付
+      </div>
+      <div class="win-content">
+        <div class="pay-info">
+          <div class="key left-box">上币数量：</div>
+          <div class="value right-box"><span id="payCoin"></span>枚</div>
+        </div>
+        <div class="pay-info ">
+          <div class="key left-box">支付金额：</div>
+          <div class="value right-box">￥<span class="price-value" id="payPrice"></span></div>
+        </div>
+        <div class="pay-info-text pay-border">
+          温馨提示：若支付成功1分钟内无上币，系统将于5分钟内自动退款；<span class="red-color">限本机(上币)使用</span>
+        </div>
+        <div class="btn pay-btn">
+          确认支付
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="win center-win">
+    <div class="center-win-main">
+      <div class="win-title">
+        <div class="close">X</div>
+        错误提示
+      </div>
+      <div class="win-content">
+        <div class="msg"></div>
+      </div>
+    </div>
+  </div>
+  <!--确认支付 end-->
+  <!--客服申诉-->
+  <div class="win bottom-win">
+    <div class="bottom-win-main">
+      <div class="win-title">客服申诉</div>
+      <div class="win-content">
+
+      </div>
+      <div class="win-bottom">
+        <div class="btn">返回</div>
+      </div>
+    </div>
+  </div>
+  <!--客服申诉 end-->
+  <!--关于-->
+  <div class="win bottom-win" id="complaintWin">
+    <div class="bottom-win-main">
+      <div class="win-title">关于奥付云</div>
+      <div class="win-content">
+
+      </div>
+      <div class="win-bottom">
+        <div class="btn close">返回</div>
+      </div>
+    </div>
+  </div>
+  <!--关于 end-->
+  <!--消费记录-->
+  <div class="win bottom-win">
+    <div class="bottom-win-main">
+      <div class="win-title">消费记录</div>
+      <div class="win-content">
+
+      </div>
+      <div class="win-bottom">
+        <div class="btn">返回</div>
+      </div>
+    </div>
+  </div>
+  <!--消费记录 end-->
+
+  <div class="loading-win">
+    <div class="loading-main">
+      <div class="loading-img">
+        <img src="./images/oval.svg" alt="">
+      </div>
+      <div class="loading-text">加载中...</div>
+    </div>
+  </div>
+  <!--套餐 模板-->
+  <script type="text/html" id="feeDemo">
+    <div class="fee-box left-box" v-data='{{data}}'>
+      <div class="fee-box-main fee-box-color">
+        <img src="./images/blue_gold_coin.png" alt="">
+        <div class="price">{{price}}元</div>
+        <div class="coin">{{coin}}币</div>
+      </div>
+      <div class="fee-text red-color" style="display:{{display}}">省{{give}}元</div>
+    </div>
+  </script>
+  <script>
+    var userData = {};
+    (function () {
+      userData.fee = JSON.parse("[]");
+    })();
+  </script>
+  <script src="./js/util.js"></script>
+  <script src="./js/main.js"></script>
+  <script src="./js/wins.js"></script>
+</body>
+
+</html>

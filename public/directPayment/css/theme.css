@@ -1,0 +1,83 @@
+.theme-color {
+    background: #1d8cd9;
+}
+
+.font-color {
+    color: #fff;
+}
+
+.fee-title-color {
+    background: #1da5f6;
+    color: #22457f;
+}
+
+.fee-content-color {
+    background: #62c7fc;
+}
+
+.fee-box-color {
+    background: #005e8a;
+    border: 1px #005e8a solid;
+    color: #a08337;
+}
+
+.active .fee-box-color {
+    background: #009bf0;
+    border: 1px #ffe051 solid;
+    color: #ffe051;
+}
+
+.highlight-color {
+    color: #ffb900;
+}
+
+.red-color {
+    color: #f00;
+}
+
+.pay-color {
+    background: linear-gradient(#fcfcfc, #dedbd7);
+}
+
+.pay-border {
+    border-color: #39c0e4;
+}
+
+.num-color {
+    color: #00a7de;
+}
+
+.num-border {
+    border-bottom: 1px #00a7de solid;
+}
+
+footer .btn {
+    background: #1a7ec7;
+}
+
+footer .btn:nth-child(2) {
+    background: #3895d7;
+}
+
+.win {
+    background: rgba(0, 0, 0, .75);
+}
+
+.win-title {
+    background: #0199E5;
+    color: #fff;
+}
+
+.win-content {
+    background: #CEEBF9;
+    color: #115AA2;
+}
+.win .pay-btn{
+  background: #ffc248;
+  color:#cd5000;
+  border-bottom: 2px #cc5100 solid;
+}
+.bottom-win .btn{
+    background: #0199E5;
+    color: #fff;
+}
