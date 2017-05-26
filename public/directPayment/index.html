@@ -73,8 +73,8 @@
       <div class="bottom-text">*若支付成功1分钟内无上币，系统将于30分钟内自动退款</div>
     </section>
     <footer>
-      <div class="btn left-box">关于奥付云</div>
-      <div class="btn left-box">消费记录</div>
+      <div class="btn left-box" id="aboutWinBtn">关于奥付云</div>
+      <div class="btn left-box" id="recordWinBtn">消费记录</div>
       <div class="btn left-box" id="complaintWinBtn" path="./complaint.html">客服申述</div>
     </footer>
   </div>
@@ -82,7 +82,7 @@
   <div class="win center-win" id="confirmPayWin">
     <div class="center-win-main">
       <div class="win-title">
-        <div class="close">X</div>
+        <div class="close"></div>
         确认支付
       </div>
       <div class="win-content">
@@ -103,10 +103,12 @@
       </div>
     </div>
   </div>
-  <div class="win center-win">
+  <!--确认支付 end-->
+  <!--错误提示-->
+  <div class="win center-win" id="errorWin">
     <div class="center-win-main">
       <div class="win-title">
-        <div class="close">X</div>
+        <div class="close"></div>
         错误提示
       </div>
       <div class="win-content">
@@ -114,22 +116,22 @@
       </div>
     </div>
   </div>
-  <!--确认支付 end-->
+  <!--错误提示 end-->
   <!--客服申诉-->
-  <div class="win bottom-win">
+  <div class="win bottom-win" id="complaintWin">
     <div class="bottom-win-main">
       <div class="win-title">客服申诉</div>
       <div class="win-content">
 
       </div>
       <div class="win-bottom">
-        <div class="btn">返回</div>
+        <div class="btn close">返回</div>
       </div>
     </div>
   </div>
   <!--客服申诉 end-->
   <!--关于-->
-  <div class="win bottom-win" id="complaintWin">
+  <div class="win bottom-win" id="aboutWin">
     <div class="bottom-win-main">
       <div class="win-title">关于奥付云</div>
       <div class="win-content">
@@ -142,19 +144,37 @@
   </div>
   <!--关于 end-->
   <!--消费记录-->
-  <div class="win bottom-win">
+  <div class="win bottom-win" id="recordWin">
     <div class="bottom-win-main">
       <div class="win-title">消费记录</div>
       <div class="win-content">
 
       </div>
       <div class="win-bottom">
-        <div class="btn">返回</div>
+        <div class="btn close">返回</div>
       </div>
     </div>
   </div>
   <!--消费记录 end-->
-
+  <!--支付成功-->
+  <div class="win pay-success-win" id="paySuccess">
+    <div class="center-win-main">
+      <div class="win-title">
+        <div class="close"></div>
+        支付成功
+      </div>
+      <div class="win-content">
+        <p class="success-text">若1分钟内无出币，5-15分钟内自动退款,详情可查看“消费记录”。</p>
+        <div class="img pay-border">
+        </div>
+        <div class="btn close close-btn">
+          确认
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--支付成功 end-->
+  <!--loading-->
   <div class="loading-win">
     <div class="loading-main">
       <div class="loading-img">
@@ -163,6 +183,7 @@
       <div class="loading-text">加载中...</div>
     </div>
   </div>
+  <!--loading end-->
   <!--套餐 模板-->
   <script type="text/html" id="feeDemo">
     <div class="fee-box left-box" v-data='{{data}}'>
@@ -181,6 +202,7 @@
     })();
   </script>
   <script src="./js/util.js"></script>
+  <script src="./js/tools.js"></script>
   <script src="./js/main.js"></script>
   <script src="./js/wins.js"></script>
 </body>

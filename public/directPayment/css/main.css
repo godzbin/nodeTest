@@ -1,3 +1,5 @@
+/*公共样式*/
+
 * {
     padding: 0;
     margin: 0 auto;
@@ -19,6 +21,9 @@ img {
 .right-box {
     float: right;
 }
+
+
+/*公共样式 end*/
 
 .main {
     padding: .2rem;
@@ -106,6 +111,7 @@ img {
     box-sizing: border-box;
     position: relative;
     pointer-events: none;
+    transition: all .2s;
 }
 
 .main .fee-box-main img {
@@ -248,6 +254,12 @@ img {
     padding: .1rem 0;
 }
 
+
+/*页脚 end*/
+
+
+/*弹框 -------------------*/
+
 .win {
     display: none;
     position: fixed;
@@ -255,15 +267,31 @@ img {
     height: 100%;
     top: 0;
     left: 0;
+    opacity: 0;
+    transition: opacity .3s;
 }
+
+.win.active {
+    opacity: 1;
+}
+
+
+/* 中部弹框 */
 
 .center-win-main {
     position: absolute;
-    top: 18%;
+    top: 10%;
     left: 0;
     right: 0;
     width: 85%;
     margin: 0 auto;
+    opacity: 0;
+    transition: opacity .5s, top .5s;
+}
+
+.win.active .center-win-main {
+    opacity: 1;
+    top: 18%;
 }
 
 .center-win-main .win-title {
@@ -274,14 +302,18 @@ img {
     font-size: .35rem;
     position: relative;
 }
-.center-win-main .win-title .close{
-  position: absolute;
-  width: .9rem;
-  height: .9rem;
-  line-height: .9rem;
-  top:0;
-  left: 0;
+
+.center-win-main .win-title .close {
+    position: absolute;
+    width: .9rem;
+    height: .9rem;
+    line-height: .9rem;
+    top: 0;
+    left: 0;
+    background: url('../images/close.png') no-repeat center center;
+    background-size: .5rem .5rem;
 }
+
 .center-win-main .win-content {
     max-height: 5.5rem;
     min-height: 1rem;
@@ -315,42 +347,89 @@ img {
     line-height: .35rem;
     padding: .2rem 0;
 }
+.center-win-main .success-text{
+    padding: .2rem 0; 
+}
+.center-win-main .img{
+    padding: .1rem;
+    border-style: dashed;
+    border-width: 2px;
+    border-radius: .2rem;
+    margin-bottom: .2rem;
+    width: 65%;
+    height: 1.3rem;
+    background: url("../images/picture.png") no-repeat center center;
+    background-size: 90% 90%;
+}
 
-.center-win-main .pay-btn {
+
+.center-win-main .pay-btn,
+.center-win-main .close-btn {
     text-align: center;
-    padding: .2rem;
+    padding: .15rem;
     border-radius: .2rem;
     margin-bottom: .3rem;
     letter-spacing: .05rem;
 }
-.bottom-win-main{
+
+
+/* 中部弹框 end */
+
+
+/* 底部弹框 */
+
+.bottom-win-main {
     position: absolute;
-    bottom: 0;
+    bottom: -10%;
     left: 0;
     width: 100%;
+    transition: bottom .3s;
 }
-.bottom-win-main .win-title{
+
+.win.active .bottom-win-main {
+    bottom: 0;
+}
+
+.bottom-win-main .win-title {
     padding: .2rem;
     font-size: .35rem;
     text-align: center;
 }
-.bottom-win-main .win-content{
+
+.bottom-win-main .win-content {
     min-height: 1rem;
+    max-height: 6rem;
+    overflow: scroll;
 }
-.bottom-win .btn{
+
+.bottom-win .btn {
     text-align: center;
     padding: .2rem;
     font-size: .35rem;
 }
-.loading-win{
+
+
+/* 底部 end */
+
+
+/* loading框 */
+
+.loading-win {
     display: none;
     position: fixed;
     width: 100%;
     height: 100%;
     top: 0;
     left: 0;
+    opacity: 0;
+    transition: opacity .3s;
 }
-.loading-win{
+
+.loading-win.active {
+    opacity: 1;
+}
+
+.loading-win {
     position: absolute;
     top: 25%;
     left: 0;
@@ -358,19 +437,25 @@ img {
     width: 2.5rem;
     height: 2.5rem;
     border-radius: .3rem;
-    background: rgba(0, 0, 0,.8);
+    background: rgba(0, 0, 0, .8);
     text-align: center;
 }
-.loading-img{
+
+.loading-img {
     width: 1.2rem;
     height: 1.2rem;
     padding: .3rem .2rem;
 }
-.loading-img img{
+
+.loading-img img {
     width: 90%;
 }
-.msg{
+
+
+/* loading框 end */
+
+.msg {
     padding: .3rem 0;
     line-height: .4rem;
-    text-align: justify;
+    text-align: center;
 }
