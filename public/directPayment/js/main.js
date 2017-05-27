@@ -191,6 +191,25 @@
     // 显示支付成功框
     showPaySuccessWin: function () {
       tools.showWin(this.paySuccessWin);
+      this.showArrowsMain();
+    },
+    showArrowsMain: function () {
+      var arrows = document.getElementsByClassName("arrow");
+      var self = this;
+      var showArrows = function (el, i, length) {
+        setTimeout(function () {
+          el.style.opacity = 1;
+          if (i == length - 1 && self.paySuccessWin.style.display == "block") {
+            setTimeout(function () {
+              self.showArrowsMain();
+            }, 100)
+          }
+        }, (i+1) * 200);
+      }
+      for (var i = 0, l = arrows.length; i < l; i++) {
+        arrows[i].style.opacity = 0;
+        showArrows(arrows[i], i, l);
+      }
     },
     // 隐藏支付成功框
     hidePaySuccessWin: function () {
@@ -204,7 +223,7 @@
     hideLoading: function () {
       tools.hideWin(this.loadingWin);
     },
-    showErrorWin: function(msg){
+    showErrorWin: function (msg) {
       var msgBox = this.errorWin.getElementsByClassName("msg")[0];
       msgBox.innerHTML = msg;
       tools.showWin(this.errorWin);

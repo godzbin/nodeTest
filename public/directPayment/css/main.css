@@ -459,3 +459,38 @@ img {
     line-height: .4rem;
     text-align: center;
 }
+/* 指引到消费记录 */
+.pay-success-win .to-record{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+} 
+.arrow{
+    position: relative;
+    top: -0.3rem;
+    margin-top: -0.18rem;
+    width: .32rem;
+    height: .32rem;
+    border-color: transparent #ffc248 #ffc248 transparent;
+    border-style: solid;
+    transform: rotate(45deg);
+    -ms-transform:rotate(45deg); 	/* IE 9 */
+    -moz-transform:rotate(45deg); 	/* Firefox */
+    -webkit-transform:rotate(45deg); /* Safari 和 Chrome */
+    -o-transform:rotate(45deg);
+    border-width: .17rem;
+    border-radius: 3px;
+    box-shadow: 2px 2px 2px #cd5000;
+    opacity: .5rem;
+    opacity: 0;
+    transition:opacity .15s; 
+}
+.record-text{
+    font-size: .24rem;
+    padding: .1rem;
+    box-sizing: border-box;
+    width: 33.33%;
+    background: #3895d7;
+}
