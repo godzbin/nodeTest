@@ -25,6 +25,10 @@
       <div class="configs-tree">
 
       </div>
+      <div class="">
+        <p class="title">输出JSON</p>
+        <textarea class="json-str" rows="30"></textarea>
+      </div>
     </div>
   </section>
   <div class="win config-win">
@@ -32,41 +36,57 @@
       <div class="title">添加子节点</div>
       <div class="content">
         <form>
-          <div class="input-box">
+          <div class="input-box span-3">
             <label for="">节点类型:</label>
-            <select> 
+            <select class="value type" v-name="type"> 
               <option value="div">盒子</option>
               <option value="img">图片</option>
               <option value="p">段落</option>
             </select>
           </div>
           <div class="input-box span-3">
+            <label for="">节点名:</label>
+            <input type="text" class="value" v-name="name" value="">
+          </div>
+          <div class="input-box span-10">
+            <label for="">内容:</label>
+            <textarea class="text value" v-name="text" rows="8" cols=""></textarea>
+          </div>
+          <div class="input-box span-10">
+            <label for="">图片地址:</label>
+            <input type="text" class="value" v-name="src" value="">
+          </div>
+          <div class="input-box span-3">
             <label for="">宽度:</label>
-            <input type="text" name="" value="">
+            <input type="text" class="value" v-style="width" value="">
           </div>
           <div class="input-box span-3">
             <label for="">高度:</label>
-            <input type="text" name="" value="">
+            <input type="text" class="value" v-style="height" value="">
           </div>
           <div class="input-box span-4">
             <label for="">背景颜色:</label>
-            <input type="text" name="" value="">
+            <input type="text" class="value" v-style="background" value="">
           </div>
           <div class="input-box span-3">
             <label for="">边框:</label>
-            <input type="text" name="" value="">
+            <input type="text" class="value" v-style="padding" value="">
           </div>
           <div class="input-box span-3">
             <label for="">字体大小:</label>
-            <input type="text" name="" value="">
+            <input type="text" class="value" v-style="fontSize" value="">
           </div>
           <div class="input-box span-4">
             <label for="">字体颜色:</label>
-            <input type="text" name="" value="">
+            <input type="text" class="value" v-style="color" value="">
           </div>
-          <div class="input-box">
-            <label for="">内容:</label>
-            <textarea class="text" rows="8" cols=""></textarea>
+          <div class="input-box span-4">
+            <label for="">对齐方式:</label>
+            <select class="value" v-style="text-align"> 
+              <option value="left">左</option>
+              <option value="right">右</option>
+              <option value="center">居中</option>
+            </select>
           </div>
         </form>
         <div class="input-box btns">
