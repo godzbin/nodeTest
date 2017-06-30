@@ -4,7 +4,7 @@
     "img": "图片",
     "p": "段落",
     "span": "字节",
-    "a" : "超链接"
+    "a": "超链接"
   }
   var userData = {
     id: "0",
@@ -37,63 +37,132 @@
       return v.toString(16);
     });
   }
-  function setData(data, json) {
-    var isRender = false;
-    if (data.parentId) {
-      if (json.id == data.parentId) {
-        data.id = guid();
-        delete data.parentId;
-        json.content.push(data);
-        isRender = true;
+  var tools = {
+    setData: function (data, json) {
+      var isRender = false;
+      if (data.parentId) {
+        if (json.id == data.parentId) {
+          data.id = guid();
+          delete data.parentId;
+          json.content.push(data);
+          isRender = true;
+        } else {
+          var l = json.content.length;
+          for (var i = 0; i < l; i++) {
+            tools.setData(data, json.content[i]);
+          }
+        }
       } else {
-        var l = json.content.length;
-        for (var i = 0; i < l; i++) {
-          setData(data, json.content[i]);
+        if (json.id == data.id) {
+          tools.setAllData(json, data);
+          isRender = true;
+        } else {
+          var l = json.content.length;
+          for (var i = 0; i < l; i++) {
+            tools.setData(data, json.content[i]);
+          }
         }
       }
-    } else {
+      if (isRender) {
+        app.render();
+        tools.setLocal();
+      }
+    },
+    // 
+    setLocal: function () {
+      localStorage.setItem("userData", JSON.stringify(userData));
+    },
+    // 删除节点
+    removeData: function (data, json, parent, i) {
+      var isRender = false;
       if (json.id == data.id) {
-        setAllData(json, data);
+        parent.splice(i, 1);
         isRender = true;
       } else {
         var l = json.content.length;
         for (var i = 0; i < l; i++) {
-          setData(data, json.content[i]);
+          tools.removeData(data, json.content[i], json.content, i);
         }
       }
-    }
-    if (isRender) {
-      app.render();
-      setLocal();
-    }
-  }
-  function setLocal(){
-    localStorage.setItem("userData", JSON.stringify(userData));
-  }
-  function removeData(data, json, parent, i) {
-    var isRender = false;
-    if (json.id == data.id) {
-      parent.splice(i, 1);
-      isRender = true;
-    } else {
-      var l = json.content.length;
-      for (var i = 0; i < l; i++) {
-        removeData(data, json.content[i], json.content, i);
+      if (isRender) {
+        app.render();
+        tools.setLocal();
       }
-    }
-    if (isRender) {
-      app.render();
-      setLocal();
+    },
+    // 替换节点
+    setAllData: function (json, data) {
+      for (i in json) {
+        json[i] = data[i];
+      }
+      return json;
+    },
+    //  上移节点
+    upData: function (data, json, parent, i) {
+      var isRender = false;
+      if (json.id == data.id) {
+        parent = tools.swap(parent, i, i - 1);
+        isRender = true;
+      } else {
+        var l = json.content.length;
+        for (var i = 0; i < l; i++) {
+          tools.upData(data, json.content[i], json.content, i);
+        }
+      }
+      if (isRender) {
+        app.render();
+        tools.setLocal();
+      }
+    },
+    // 下移节点
+    downData: function (data, json, parent, i) {
+      var isRender = false;
+      if (json.id == data.id) {
+        // parent.splice(i, 1);
+        parent = tools.swap(parent, i, i + 1);
+        isRender = true;
+      } else {
+        var l = json.content.length;
+        for (var i = l - 1; i >= 0; i--) {
+          tools.downData(data, json.content[i], json.content, i);
+        }
+      }
+      if (isRender) {
+        app.render();
+        tools.setLocal();
+      }
+    },
+    // 插入节点
+    insertData: function (data, json, parent, i) {
+      var isRender = false;
+      if (json.id == data.id) {
+        data.id = guid();
+        parent.splice(i, 0, data);
+        isRender = true;
+      } else {
+        var l = json.content.length;
+        for (var i = l - 1; i >= 0; i--) {
+          tools.insertData(data, json.content[i], json.content, i);
+        }
+      }
+      if (isRender) {
+        app.render();
+        tools.setLocal();
+      }
+    },
+    swap: function (array, first, second) {
+      if (!array[second] || !array[first]) {
+        return array;
+      }
+      var tmp = array[second];
+      array[second] = array[first];
+      array[first] = tmp;
+      return array;
     }
   }
-  function setAllData(json, data) {
-    for (i in json) {
-      json[i] = data[i];
-    }
-    return json;
-  };
+
   function App() {
     var dom = document, self = this;
+    this.data = {};
     this.init = function () {
       this.cacheEl();
       this.addEvents();
@@ -103,31 +172,55 @@
       this.phoneBox = g(".phone-box")[0];
       this.configBox = g(".configs-tree")[0];
       this.jsonStrEl = g(".json-str")[0];
+      // this.configsBtns = g(".configs-btns")[0];
     };
     this.addEvents = function () {
       this.configBox.addEventListener("click", this.clickConfigs);
+      // this.configsBtns.addEventListener("click", this.clickBtns);
     };
-    this.clickConfigs = function (e) {
-      console.dir(e.target);
+    this.clickBtns = function (e) {
       var target = e.target;
       if (target.tagName == "BUTTON") {
         var _type = target.getAttribute("v-type");
-        var dataStr = target.getAttribute("v-data");
-        var _name = target.innerText;
-        var data = isJSONStr(dataStr) ? JSON.parse(dataStr) : dataStr;
+        // var dataStr = target.getAttribute("v-data");
+        var _id = target.getAttribute("v-id");
+        var _name = target.title;
+        // var data = isJSONStr(dataStr) ? JSON.parse(dataStr) : dataStr;
+        var data = self.data[_id];
         if (_type == "delete") {
           var r = confirm("确定要删掉节点" + data.name || "" + "吗?");
           if (r) {
-            removeData(data, userData);
+            tools.removeData(data, userData);
           }
-        } else {
+        } else if (_type == "add" || _type == "update") {
           win.openWin(_type, data, _name);
+        } else if (_type == "up") {
+          tools.upData(data, userData);
+        } else if (_type == "down") {
+          tools.downData(data, userData);
+        } else if (_type == "insert") {
+          tools.insertData(data, userData);
         }
+      }
+    };
+    this.clickConfigs = function (e) {
+      var target = e.target;
+      if (target.className == "li") {
+        self.activeEl && (self.activeEl.className = "li");
+        self.activeEl = target;
+        self.activeEl.className += " active";
+        var _id = target.getAttribute("v-id");
+        var json = self.data[_id];
+        self.activeJson = json;
+        // self.setBtns(self.configsBtns, json);
+      } else if (target.tagName == "BUTTON") {
+        self.clickBtns(e);
       }
     };
     this.render = function () {
       this.phoneBox.innerHTML = "";
       this.configBox.innerHTML = "";
+      self.activeEl && (self.activeEl.className = "li");
       this.setPhone(this.phoneBox, userData);
       this.setTree(this.configBox, userData);
       this.jsonStrEl.value = JSON.stringify(userData, null, 2);
@@ -151,10 +244,17 @@
     };
     this.setTree = function (el, json) {
       var newEl = dom.createElement("div");
-      newEl.className = "li";
-      newEl.innerHTML = "<div>" + this.getStr(json) + "</div>";
+      if (this.activeJson && this.activeJson.id == json.id) {
+        newEl.className = "li active";
+        self.activeEl = newEl;
+      } else {
+        newEl.className = "li";
+      }
+      newEl.setAttribute("v-id", json.id);
+      newEl.innerHTML = "<div class='text'>" + this.getStr(json) + "</div>";
       el.append(newEl);
       this.setBtns(newEl, json);
+      this.data[json.id] = json;
       if (!json.content) return;
       var len = json.content.length;
       for (var j = 0; j < len; j++) {
@@ -162,27 +262,45 @@
       }
     };
     this.setBtns = function (el, json) {
-      if (json.type !== "img") this.setBtn(el, "添加子节点", "add", json);
-      this.setBtn(el, "更新本节点", "update", json);
-      if (json.id !== "0") this.setBtn(el, "删除本节点", "delete", json);
+      console.dir(el);
+      var newEl = dom.createElement("div");
+      newEl.className = "configs-btns";
+      el.append(newEl);
+      // el.innerHTML = "";
+      if (json.type !== "img" && json.type !== "span") {
+        this.setBtn(newEl, "＋", "add", json, "添加子节点");
+      }
+      this.setBtn(newEl, "✎", "update", json, "更新节点");
+      if (json.id !== "0") {
+        this.setBtn(newEl, " ↙ ", "insert", json, "向下复制插入");
+        this.setBtn(newEl, " ☒ ", "delete", json, "删除");
+        this.setBtn(newEl, "↑↑", "upFirst", json, "置顶");
+        this.setBtn(newEl, "↑", "up", json, "向上移");
+        this.setBtn(newEl, "↓", "down", json, "向下移");
+        this.setBtn(newEl, "↓↓", "downLast", json, "置底");
+      }
     };
-    this.setBtn = function (el, name, type, json) {
+    this.setBtn = function (el, name, type, json, title) {
       var btn = dom.createElement("button");
       btn.innerText = name;
       btn.className = type;
+      btn.title = title || "";
       btn.setAttribute("v-type", type);
-      btn.setAttribute("v-data", JSON.stringify(json));
+      btn.setAttribute("v-id", json.id);
+      // btn.setAttribute("v-data", JSON.stringify(json));
       el.append(btn);
     };
     this.getStr = function (json) {
       var strArr = [];
-      strArr.push("名称：" + (json.name || "未命名"));
-      strArr.push("节点属性：<strong>" + types[json.type] + "</strong>");
-      strArr.push("宽度：" + json.style.width  || "自动");
-      strArr.push("高度：" + json.style.height || "自动");
-      strArr.push("背景颜色：" + "<span style='padding: 0 5px;background:"+json.style.background+"'></span>" || "");
+      strArr.push("<p>名称：<strong>" + (json.name || "未命名") + "</strong></p>");
+      strArr.push("节点属性：<strong>" + types[json.type] + ";</strong>");
+      strArr.push("宽度：" + (json.style.width || "自动;"));
+      strArr.push("高度：" + (json.style.height || "自动;"));
+      json.style.background && strArr.push("背景颜色：" + "<span style='padding: 0 5px;background:" + json.style.background + "'>;</span>" || "");
+      json.text && strArr.push("<p>内容：" + json.text.substr(0, 20) + (json.text.length > 20 ? "..." : "") + "</p>");
+      json.src && strArr.push("<p>图片：<img style='width:50px' src='" + json.src + "'></p>");
       // strArr.push("<p>样式：" + JSON.stringify(json.style) + "</p>");
-      return strArr.join("；");
+      return strArr.join("");
     };
   };
 
@@ -248,7 +366,7 @@
         return;
       }
       this.data.content = this.data.content || [];
-      setData(this.data, userData);
+      tools.setData(this.data, userData);
       this.hide();
     };
     this.initVaue = function () {
@@ -270,7 +388,7 @@
   var win = new Win();
   document.addEventListener("DOMContentLoaded", function () {
     var local = localStorage.getItem("userData");
-    if(local){
+    if (local) {
       userData = JSON.parse(local);
     }
     app.init();

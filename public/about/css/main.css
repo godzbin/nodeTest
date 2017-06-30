@@ -88,26 +88,47 @@ header {
 }
 
 .configs-main .title,
-.phone-main .title {
+.phone-main .title,
+.json-str-main .title {
   font-size: 18px;
   font-weight: 600;
   padding: 5px;
 }
 
 .configs-main .configs-tree {
-  border: 1px #aaa solid;
+  /*border: 1px #aaa solid;*/
   border-radius: 5px;
   height: 590px;
   overflow: scroll;
   background: #fff;
+  font-size: 14px;
 }
 
 .configs-main .configs-tree .li {
   margin-left: 10px;
+  margin-top: 5px;
+  border-radius: 5px;
   padding: 10px;
   border-bottom: 1px #ddd solid;
   border-top: 1px #ddd solid;
+  border-right: 1px #ddd solid;
   position: relative;
+  background: #fff;
+  /*background: #fff;*/
+}
+
+.configs-main .configs-tree .li .text {
+  pointer-events: none;
+  padding: 5px;
+}
+
+
+/*.configs-main .configs-tree .li.active>.text{
+  color: #fff;
+}*/
+
+.configs-main .configs-tree .li.active {
+  /*background: #E58C7B;*/
 }
 
 .configs-main .configs-tree .li::before {
@@ -117,29 +138,62 @@ header {
   top: 0;
   width: 5px;
   height: 100%;
-  background: #496be6;
-  border-top-left-radius: 2px; 
-  border-bottom-left-radius: 5px; 
+  background: #ddd;
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 5px;
+  transition: background .3s;
 }
 
-.configs-main .configs-tree .li button {
+.configs-main .configs-tree .li.active::before {
+  background: #8bc34a;
+}
+
+.configs-main .configs-btns {
+  padding-top: 5px;
+  /*background: #fff;*/
+  margin-top: 5px;
+  /*border-radius: 5px;*/
+  height: 0;
+  border-top: 1px #ddd solid;
+  text-align: right;
+  opacity: 0;
+  transition: all .5s ease .1s;
+}
+
+.configs-main .configs-tree .li.active>.configs-btns {
+  opacity: 1;
+  height: 40px;
+}
+
+.configs-main .configs-btns button {
   padding: 5px;
-  margin: 5px;
+  margin: 3px;
   border: 0;
   background: #496be6;
   color: #fff;
   border-radius: 5px;
+  height: 30px;
+  width: 30px;
+  cursor: pointer;
 }
-.configs-main .configs-tree .li button.add{
+.configs-main .configs-btns button:hover{
+  border: 1px #496be6 solid;
+}
+.configs-main .configs-btns button.add {
   background: #8bc34a;
 }
-.configs-main .configs-tree .li button.delete{
+
+.configs-main .configs-btns button.delete {
   background: #e91e63;
 }
-.json-str{
+
+.json-str {
   width: 100%;
 }
+
+
 /*  编辑框 */
+
 .win {
   position: fixed;
   display: none;
@@ -168,7 +222,7 @@ header {
 }
 
 .win .center-win .content {
-  height: 450px;
+  height: 550px;
   background: #efefef;
   border-bottom-left-radius: 15px;
   border-bottom-right-radius: 15px;
@@ -182,7 +236,7 @@ header {
 
 .content form {
   overflow: auto;
-  height: 380px;
+  height: 450px;
   overflow: scroll;
 }
 
@@ -206,6 +260,7 @@ header {
 .btns button {
   width: 100px;
 }
-.btns .closeBtn{
+
+.btns .closeBtn {
   background: #aaa;
 }
