@@ -2,6 +2,7 @@
   padding: 0;
   margin: 0 auto;
   box-sizing: border-box;
+  overflow: auto;
 }
 
 ::-webkit-scrollbar {
@@ -13,6 +14,11 @@
 body {
   font-family: "幼圆";
   background: #efefef;
+  font-size: 14px;
+}
+
+img {
+  display: block;
 }
 
 input,
@@ -21,6 +27,11 @@ textarea {
   border: 1px #ddd solid;
   padding: 5px;
   border-radius: 5px;
+}
+
+input,
+select {
+  height: 30px;
 }
 
 label {
@@ -114,21 +125,19 @@ header {
   border-right: 1px #ddd solid;
   position: relative;
   background: #fff;
+  position: relative;
+  color: #666;
+  transition: all .3s;
   /*background: #fff;*/
 }
-
+.configs-main .configs-tree .li.active{
+  border-color: #8bc34a;
+  color: #000;
+}
 .configs-main .configs-tree .li .text {
   pointer-events: none;
   padding: 5px;
-}
-
-
-/*.configs-main .configs-tree .li.active>.text{
-  color: #fff;
-}*/
-
-.configs-main .configs-tree .li.active {
-  /*background: #E58C7B;*/
+  line-height: 22px;
 }
 
 .configs-main .configs-tree .li::before {
@@ -138,16 +147,37 @@ header {
   top: 0;
   width: 5px;
   height: 100%;
-  background: #ddd;
+  background: #eee;
   border-top-left-radius: 2px;
   border-bottom-left-radius: 5px;
-  transition: background .3s;
+  transition: all .3s;
 }
 
 .configs-main .configs-tree .li.active::before {
   background: #8bc34a;
 }
-
+.configs-main .configs-tree .li>.hideBox{
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  font-size: 12px;
+  color: #999;
+}
+.configs-main .configs-tree .li>.hideBox::before{
+  content: "收起";
+}
+.configs-main .configs-tree .li.hideChild>.hideBox::before{
+  content: "展开";
+}
+.configs-main .configs-tree .li.hideChild>.li{
+  /*display: none;*/
+  height: 0;
+  padding: 0;
+  border: 0;
+}
 .configs-main .configs-btns {
   padding-top: 5px;
   /*background: #fff;*/
@@ -157,28 +187,37 @@ header {
   border-top: 1px #ddd solid;
   text-align: right;
   opacity: 0;
-  transition: all .5s ease .1s;
+  transition: all .3s ease .1s;
 }
 
 .configs-main .configs-tree .li.active>.configs-btns {
   opacity: 1;
-  height: 40px;
+  height: 35px;
 }
 
 .configs-main .configs-btns button {
-  padding: 5px;
+  padding: 2px;
+  font-size: 12px;
   margin: 3px;
   border: 0;
-  background: #496be6;
+  background: #FACE20;
   color: #fff;
   border-radius: 5px;
-  height: 30px;
-  width: 30px;
   cursor: pointer;
+  opacity: 0.72;
 }
-.configs-main .configs-btns button:hover{
-  border: 1px #496be6 solid;
+.configs-main .configs-tree .li>.configs-btns button{
+  height: 25px;
+  width: 20px;
+  transition: all .1s ease .2s;
 }
+.configs-main .configs-tree .li.active>.configs-btns button{
+  width: 25px;
+}
+.configs-main .configs-btns button:hover {
+  opacity: 1;
+}
+
 .configs-main .configs-btns button.add {
   background: #8bc34a;
 }
@@ -186,7 +225,9 @@ header {
 .configs-main .configs-btns button.delete {
   background: #e91e63;
 }
-
+.configs-main .configs-btns button.update {
+  background: #496be6;
+}
 .json-str {
   width: 100%;
 }

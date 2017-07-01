@@ -37,7 +37,13 @@
       return v.toString(16);
     });
   }
+  function isClass(o) {
+    if (o === null) return "Null";
+    if (o === undefined) return "Undefined";
+    return Object.prototype.toString.call(o).slice(8, -1);
+  }
   var tools = {
+    // 添加/修改 节点
     setData: function (data, json) {
       var isRender = false;
       if (data.parentId) {
@@ -64,11 +70,15 @@
         }
       }
       if (isRender) {
-        app.render();
-        tools.setLocal();
+        tools.updateFace();
       }
     },
-    // 
+    updateFace: function () {
+      app.render();
+      phone.render();
+      tools.setLocal();
+    },
+    // 写入本地缓存
     setLocal: function () {
       localStorage.setItem("userData", JSON.stringify(userData));
     },
@@ -85,16 +95,31 @@
         }
       }
       if (isRender) {
-        app.render();
-        tools.setLocal();
+        tools.updateFace();
       }
     },
     // 替换节点
-    setAllData: function (json, data) {
-      for (i in json) {
-        json[i] = data[i];
+    setAllData: function (result, obj) {
+      var oClass = isClass(obj);
+      //确定result的类型
+      if (oClass === "Object") {
+        result = {};
+      } else if (oClass === "Array") {
+        result = [];
+      } else {
+        return obj;
       }
-      return json;
+      for (key in obj) {
+        var copy = obj[key];
+        if (isClass(copy) == "Object") {
+          result[key] = arguments.callee(result[key], copy);//递归调用
+        } else if (isClass(copy) == "Array") {
+          result[key] = arguments.callee(result[key], copy);
+        } else {
+          result[key] = obj[key];
+        }
+      }
+      return result;
     },
     //  上移节点
     upData: function (data, json, parent, i) {
@@ -109,8 +134,7 @@
         }
       }
       if (isRender) {
-        app.render();
-        tools.setLocal();
+        tools.updateFace();
       }
     },
     // 下移节点
@@ -127,16 +151,17 @@
         }
       }
       if (isRender) {
-        app.render();
-        tools.setLocal();
+        tools.updateFace();
       }
     },
     // 插入节点
     insertData: function (data, json, parent, i) {
       var isRender = false;
       if (json.id == data.id) {
-        data.id = guid();
-        parent.splice(i, 0, data);
+        var newData = {};
+        newData = tools.setAllData(newData, data);
+        newData.id = guid();
+        parent.splice(i, 0, newData);
         isRender = true;
       } else {
         var l = json.content.length;
@@ -145,10 +170,42 @@
         }
       }
       if (isRender) {
-        app.render();
-        tools.setLocal();
+        tools.updateFace();
       }
     },
+    upFirstData: function (data, json, parent, i) {
+      var isRender = false;
+      if (json.id == data.id) {
+        parent.splice(i, 1);
+        parent.unshift(data);
+        isRender = true;
+      } else {
+        var l = json.content.length;
+        for (var i = 0; i < l; i++) {
+          tools.upFirstData(data, json.content[i], json.content, i);
+        }
+      }
+      if (isRender) {
+        tools.updateFace();
+      }
+    },
+    downLastData: function (data, json, parent, i) {
+      var isRender = false;
+      if (json.id == data.id) {
+        parent.splice(i, 1);
+        parent.push(data);
+        isRender = true;
+      } else {
+        var l = json.content.length;
+        for (var i = l - 1; i >= 0; i--) {
+          tools.downLastData(data, json.content[i], json.content, i);
+        }
+      }
+      if (isRender) {
+        tools.updateFace();
+      }
+    },
+    // 交换数组内对象位置
     swap: function (array, first, second) {
       if (!array[second] || !array[first]) {
         return array;
@@ -163,13 +220,14 @@
   function App() {
     var dom = document, self = this;
     this.data = {};
+    this.hideJson = {};
     this.init = function () {
       this.cacheEl();
       this.addEvents();
       this.render();
     };
     this.cacheEl = function () {
-      this.phoneBox = g(".phone-box")[0];
+      // this.phoneBox = g(".phone-box")[0];
       this.configBox = g(".configs-tree")[0];
       this.jsonStrEl = g(".json-str")[0];
       // this.configsBtns = g(".configs-btns")[0];
@@ -182,31 +240,51 @@
       var target = e.target;
       if (target.tagName == "BUTTON") {
         var _type = target.getAttribute("v-type");
-        // var dataStr = target.getAttribute("v-data");
         var _id = target.getAttribute("v-id");
         var _name = target.title;
-        // var data = isJSONStr(dataStr) ? JSON.parse(dataStr) : dataStr;
         var data = self.data[_id];
-        if (_type == "delete") {
+        this.setDataToType(_type, data, _name);
+      }
+    };
+    this.setDataToType = function (_type, data, _name) {
+      switch (_type) {
+        case "delete":
           var r = confirm("确定要删掉节点" + data.name || "" + "吗?");
           if (r) {
             tools.removeData(data, userData);
           }
-        } else if (_type == "add" || _type == "update") {
+          break;
+        case "add":
           win.openWin(_type, data, _name);
-        } else if (_type == "up") {
+          break;
+        case "update":
+          win.openWin(_type, data, _name);
+          break;
+        case "up":
           tools.upData(data, userData);
-        } else if (_type == "down") {
+          break;
+        case "down":
           tools.downData(data, userData);
-        } else if (_type == "insert") {
+          break;
+        case "insert":
           tools.insertData(data, userData);
-        }
+          break;
+        case "upFirst":
+          tools.upFirstData(data, userData);
+          break;
+        case "downLast":
+          tools.downLastData(data, userData);
+          break;
+        default:
+          break;
       }
     };
     this.clickConfigs = function (e) {
       var target = e.target;
-      if (target.className == "li") {
-        self.activeEl && (self.activeEl.className = "li");
+      if (target.className.indexOf("li") > -1) {
+        if (self.activeEl) {
+          self.activeEl.className = self.activeEl.className.replace(" active", "");
+        }
         self.activeEl = target;
         self.activeEl.className += " active";
         var _id = target.getAttribute("v-id");
@@ -215,44 +293,45 @@
         // self.setBtns(self.configsBtns, json);
       } else if (target.tagName == "BUTTON") {
         self.clickBtns(e);
+      } else if (target.className.indexOf("hideBox") > -1) {
+        var el = target.parentElement;
+        var _id = target.getAttribute("v-id");
+        if (self.hideJson[_id]) {
+          self.hideJson[_id] = null;
+          delete self.hideJson[_id];
+          el.className = el.className.replace(" hideChild", "");
+        } else {
+          self.hideJson[_id] = true;
+          el.className += " hideChild";
+        }
       }
     };
     this.render = function () {
-      this.phoneBox.innerHTML = "";
+      // this.phoneBox.innerHTML = "";
       this.configBox.innerHTML = "";
       self.activeEl && (self.activeEl.className = "li");
-      this.setPhone(this.phoneBox, userData);
+      // this.setPhone(this.phoneBox, userData);
       this.setTree(this.configBox, userData);
       this.jsonStrEl.value = JSON.stringify(userData, null, 2);
     };
-    this.setPhone = function (el, json) {
-      var newEl = document.createElement(json.type);
-      for (i in json.style) {
-        newEl.style[i] = json.style[i];
-      }
-      el.append(newEl);
-      if (json.type !== "img") {
-        newEl.innerText = json.text || "";
-      } else {
-        newEl.src = json.src;
-      }
-      if (!json.content) return;
-      var len = json.content.length;
-      for (var j = 0; j < len; j++) {
-        this.setPhone(newEl, json.content[j]);
-      }
-    };
     this.setTree = function (el, json) {
       var newEl = dom.createElement("div");
+      var hideEl = dom.createElement("div");
+      newEl.className = "li";
+      hideEl.className = "hideBox";
+      hideEl.setAttribute("v-id", json.id);
       if (this.activeJson && this.activeJson.id == json.id) {
-        newEl.className = "li active";
+        newEl.className += " active";
         self.activeEl = newEl;
-      } else {
-        newEl.className = "li";
       }
+      if (this.hideJson && this.hideJson[json.id]) {
+        newEl.className += " hideChild";
+      }
+      
       newEl.setAttribute("v-id", json.id);
       newEl.innerHTML = "<div class='text'>" + this.getStr(json) + "</div>";
       el.append(newEl);
+      newEl.append(hideEl);
       this.setBtns(newEl, json);
       this.data[json.id] = json;
       if (!json.content) return;
@@ -272,8 +351,8 @@
       }
       this.setBtn(newEl, "✎", "update", json, "更新节点");
       if (json.id !== "0") {
-        this.setBtn(newEl, " ↙ ", "insert", json, "向下复制插入");
         this.setBtn(newEl, " ☒ ", "delete", json, "删除");
+        this.setBtn(newEl, " ↙ ", "insert", json, "向下复制插入");
         this.setBtn(newEl, "↑↑", "upFirst", json, "置顶");
         this.setBtn(newEl, "↑", "up", json, "向上移");
         this.setBtn(newEl, "↓", "down", json, "向下移");
@@ -303,7 +382,40 @@
       return strArr.join("");
     };
   };
-
+  function Phone() {
+    var dom = document, self = this;
+    this.init = function () {
+      this.cacheEl();
+      this.addEvents();
+      this.render();
+    };
+    this.cacheEl = function () {
+      this.phoneBox = g(".phone-box")[0];
+    };
+    this.addEvents = function () {
+    };
+    this.render = function () {
+      this.phoneBox.innerHTML = "";
+      this.setPhone(this.phoneBox, userData);
+    };
+    this.setPhone = function (el, json) {
+      var newEl = document.createElement(json.type);
+      for (i in json.style) {
+        newEl.style[i] = json.style[i];
+      }
+      el.append(newEl);
+      if (json.type !== "img") {
+        newEl.innerText = json.text || "";
+      } else {
+        newEl.src = json.src;
+      }
+      if (!json.content) return;
+      var len = json.content.length;
+      for (var j = 0; j < len; j++) {
+        this.setPhone(newEl, json.content[j]);
+      }
+    };
+  };
   function Win() {
     this.el = g(".config-win")[0];
     var self = this, click = "click";
@@ -385,6 +497,7 @@
     };
   };
   var app = new App();
+  var phone = new Phone();
   var win = new Win();
   document.addEventListener("DOMContentLoaded", function () {
     var local = localStorage.getItem("userData");
@@ -393,5 +506,6 @@
     }
     app.init();
     win.init();
+    phone.init();
   }, false);
 })();
