@@ -42,6 +42,19 @@
     if (o === undefined) return "Undefined";
     return Object.prototype.toString.call(o).slice(8, -1);
   }
+  //  下载页面
+  function downloadFile(fileName, content) {
+    var aLink = document.createElement('a');
+    var blob = new Blob([content], {
+      type: "application/js"
+    });
+    var evt = document.createEvent("HTMLEvents");
+    evt.initEvent("click", false, false); //initEvent 不加后两个参数在FF下会报错, 感谢 Barret Lee 的反馈
+    aLink.download = fileName;
+    aLink.href = URL.createObjectURL(blob);
+    aLink.dispatchEvent(evt);
+    aLink.click();
+  }
   var tools = {
     // 添加/修改 节点
     setData: function (data, json) {
@@ -111,12 +124,16 @@
       }
       for (key in obj) {
         var copy = obj[key];
+
         if (isClass(copy) == "Object") {
           result[key] = arguments.callee(result[key], copy);//递归调用
         } else if (isClass(copy) == "Array") {
           result[key] = arguments.callee(result[key], copy);
         } else {
           result[key] = obj[key];
+        }
+        if (key == "id") {
+          result[key] = guid();
         }
       }
       return result;
@@ -216,7 +233,7 @@
       return array;
     }
   }
-
+  // 主控制界面
   function App() {
     var dom = document, self = this;
     this.data = {};
@@ -230,11 +247,56 @@
       // this.phoneBox = g(".phone-box")[0];
       this.configBox = g(".configs-tree")[0];
       this.jsonStrEl = g(".json-str")[0];
+      this.applyJson = g(".applyJson")[0];
+      this.downPageBtn = g(".downPage")[0];
+      this.useDemoInput = g(".useDemoInput")[0];
+      this.useDemoBtn = g(".useDemoBtn")[0];
       // this.configsBtns = g(".configs-btns")[0];
     };
     this.addEvents = function () {
       this.configBox.addEventListener("click", this.clickConfigs);
+      this.applyJson.addEventListener("click", this.applyJsonData)
+      this.downPageBtn.addEventListener("click", this.downPage);
+      this.useDemoBtn.addEventListener("click", this.useDemo);
       // this.configsBtns.addEventListener("click", this.clickBtns);
+    };
+    this.useDemo = function () {
+      var link = self.useDemoInput.value;
+      if (!link) {
+        alert("输入链接为空");
+      }
+      var script = dom.createElement("script");
+      script.src = link;
+      document.body.append(script);
+      script.onload = function () {
+        if (typeof aboutConfig !== "Undefined") {
+          userData = aboutConfig;
+          tools.updateFace();
+        }
+      };
+    };
+    this.downPage = function () {
+      var jsonStr = self.jsonStrEl.value;
+      if (isJSONStr(jsonStr)) {
+        downloadFile(self.getTimeStr() + ".js", "var aboutConfig=" + jsonStr);
+      } else {
+        alert("json格式有误");
+      }
+    };
+    this.getTimeStr = function () {
+      var date = new Date();
+      var str = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + "-" + date.getHours() + "-" + date.getMinutes();
+      return str;
+    };
+    this.applyJsonData = function () {
+      var jsonStr = self.jsonStrEl.value;
+      if (isJSONStr(jsonStr)) {
+        var json = JSON.parse(jsonStr);
+        userData = json;
+        tools.updateFace();
+      } else {
+        alert("json格式有误");
+      }
     };
     this.clickBtns = function (e) {
       var target = e.target;
@@ -327,7 +389,7 @@
       if (this.hideJson && this.hideJson[json.id]) {
         newEl.className += " hideChild";
       }
-      
+
       newEl.setAttribute("v-id", json.id);
       newEl.innerHTML = "<div class='text'>" + this.getStr(json) + "</div>";
       el.append(newEl);
@@ -341,7 +403,6 @@
       }
     };
     this.setBtns = function (el, json) {
-      console.dir(el);
       var newEl = dom.createElement("div");
       newEl.className = "configs-btns";
       el.append(newEl);
@@ -375,13 +436,13 @@
       strArr.push("节点属性：<strong>" + types[json.type] + ";</strong>");
       strArr.push("宽度：" + (json.style.width || "自动;"));
       strArr.push("高度：" + (json.style.height || "自动;"));
-      json.style.background && strArr.push("背景颜色：" + "<span style='padding: 0 5px;background:" + json.style.background + "'>;</span>" || "");
+      json.style.background && strArr.push("背景颜色：" + "<span style='padding: 0 5px;background:" + json.style.background + "'></span>;" || "");
       json.text && strArr.push("<p>内容：" + json.text.substr(0, 20) + (json.text.length > 20 ? "..." : "") + "</p>");
       json.src && strArr.push("<p>图片：<img style='width:50px' src='" + json.src + "'></p>");
-      // strArr.push("<p>样式：" + JSON.stringify(json.style) + "</p>");
       return strArr.join("");
     };
   };
+  // 渲染手机
   function Phone() {
     var dom = document, self = this;
     this.init = function () {
@@ -393,6 +454,18 @@
       this.phoneBox = g(".phone-box")[0];
     };
     this.addEvents = function () {
+      this.phoneBox.addEventListener("click", this.clickPhone);
+    };
+    this.clickPhone = function (e) {
+      var target = e.target;
+      if (target.className.indexOf("hideContent") > -1) {
+        var nextEl = target.nextSibling;
+        if (nextEl && nextEl.style.display == "none") {
+          nextEl.style.display = "block";
+        } else if (nextEl) {
+          nextEl.style.display = "none";
+        }
+      }
     };
     this.render = function () {
       this.phoneBox.innerHTML = "";
@@ -400,6 +473,9 @@
     };
     this.setPhone = function (el, json) {
       var newEl = document.createElement(json.type);
+      for (i in json) {
+        newEl[i] = json[i];
+      }
       for (i in json.style) {
         newEl.style[i] = json.style[i];
       }
@@ -416,6 +492,7 @@
       }
     };
   };
+  // 弹窗配置界面
   function Win() {
     this.el = g(".config-win")[0];
     var self = this, click = "click";

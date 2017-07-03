@@ -2,9 +2,9 @@
 <html lang="en">
 
 <head>
+  <meta content="width=device-width, height=device-height ,initial-scale=1, maximum-scale=1, user-scalable=0" name="viewport"
+    id="metaViewPort" />
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>about配置文件</title>
   <link rel="stylesheet" type="" href="./css/main.css">
 </head>
@@ -19,9 +19,15 @@
       <div class="phone-box">
 
       </div>
+
     </div>
     <div class="left-box configs-main">
       <div class="title">配置</div>
+      <div class="use-demo">
+        <label for="">使用模板:</label>
+        <input type="text" class="useDemoInput">
+        <button class="useDemoBtn">导入</button>
+      </div>
       <div class="configs-tree">
 
       </div>
@@ -31,8 +37,9 @@
         <p class="title">输出JSON</p>
         <textarea class="json-str" rows="30"></textarea>
         <div class="btns">
-          <button>应用JSON内容</button>
-          <button>下载页面</button>
+          <button class="applyJson">应用JSON内容</button>
+          <button class="downPage">下载配置脚本</button>
+          <!--<a href="#"  id="downFile">下载</a>-->
         </div>
       </div>
     </div>
@@ -54,6 +61,13 @@
             <label for="">节点名:</label>
             <input type="text" class="value" v-name="name" value="">
           </div>
+          <div class="input-box span-4">
+            <label for="">组件:</label>
+            <select class="value" v-name="className"> 
+              <option value="">无</option>
+              <option value="hideContent">点击隐藏下一个内容</option>
+            </select>
+          </div>
           <div class="input-box span-10">
             <label for="">内容:</label>
             <textarea class="text value" v-name="text" rows="8" cols=""></textarea>
@@ -63,7 +77,8 @@
             <input type="text" class="value" v-name="src" value="">
           </div>
           <div class=" input-box span-10">
-            <strong>样式：</strong> <p>边框可使用格式如：1px（全范围）、1px 1px（上下 左右）、1px 1px 1px 1px（上 右 下 左）；</p>
+            <strong>样式：</strong>
+            <p>边框可使用格式如：1px（全范围）、1px 1px（上下 左右）、1px 1px 1px 1px（上 右 下 左）；</p>
           </div>
           <div class="input-box span-3">
             <label for="">宽度:</label>
@@ -101,7 +116,7 @@
             <label for="">首行缩进:</label>
             <input type="text" class="value" v-style="textIndent" value="">
           </div>
-          
+
           <div class="input-box span-3">
             <label for="">边框宽度:</label>
             <input type="text" class="value" v-style="borderWidth" value="" placeholder="Xpx Xpx">
@@ -149,6 +164,21 @@
     </div>
   </div>
   <script src="./js/main.js">
+  </script>
+  <script>
+    // function setWidth() {
+    //   var width = document.getElementsByClassName("phone-box")[0].clientWidth;
+    //   var height = document.getElementsByClassName("phone-box")[0].clientHeight;
+    //   var new_width = 0;
+    //   if (width < height) {
+    //     new_width = width * (1 - (width / height - 375 / 590));
+    //   } else {
+    //     new_width = width;
+    //   }
+    //   var fontSize = new_width / 6.4;
+    //   document.getElementsByClassName("phone-box")[0].style.fontSize = fontSize + "px";
+    // }
+    // setWidth();
   </script>
 </body>
 
