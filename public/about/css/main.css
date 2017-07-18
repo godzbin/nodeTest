@@ -76,7 +76,7 @@ header {
 .cul-3>div {
   float: left;
   width: 31.3%;
-  padding: 1%;
+  padding: .5%;
 }
 
 .cul-2>div {
@@ -105,32 +105,38 @@ header {
   font-weight: 600;
   padding: 5px;
 }
-.use-demo{
+
+.use-demo {
   padding: 5px;
   margin: 5px 0;
   background: #fff;
   border-radius: 5px;
   overflow: auto;
 }
-.use-demo>*{
+
+.use-demo>* {
   float: left;
   height: 30px;
   margin: 0;
   padding: 5px;
   font-size: 14px;
 }
-.use-demo label{
+
+.use-demo label {
   width: 20%;
 }
-.use-demo input{
+
+.use-demo input {
   width: 65%;
   border-radius: 5px 0 0 5px;
   border-right: 0;
 }
-.use-demo button{
+
+.use-demo button {
   border-radius: 0 5px 5px 0;
   width: 15%;
 }
+
 .configs-main .configs-tree {
   /*border: 1px #aaa solid;*/
   border-radius: 5px;
@@ -142,13 +148,13 @@ header {
 }
 
 .configs-main .configs-tree .li {
-  margin-left: 10px;
-  margin-top: 5px;
+  margin-left: 2px;
+  margin-top: 1px;
   border-radius: 5px;
-  padding: 10px;
-  border-bottom: 1px #ddd solid;
-  border-top: 1px #ddd solid;
-  border-right: 1px #ddd solid;
+  padding: 5px;
+  border-bottom: 1px #eee solid;
+  border-top: 4px #eee solid;
+  border-right: 1px #eee solid;
   position: relative;
   background: #fff;
   position: relative;
@@ -156,10 +162,12 @@ header {
   transition: all .3s;
   /*background: #fff;*/
 }
-.configs-main .configs-tree .li.active{
+
+.configs-main .configs-tree .li.active {
   border-color: #8bc34a;
   color: #000;
 }
+
 .configs-main .configs-tree .li .text {
   pointer-events: none;
   padding: 5px;
@@ -171,7 +179,7 @@ header {
   position: absolute;
   left: 0;
   top: 0;
-  width: 5px;
+  width: 4px;
   height: 100%;
   background: #eee;
   border-top-left-radius: 2px;
@@ -182,7 +190,8 @@ header {
 .configs-main .configs-tree .li.active::before {
   background: #8bc34a;
 }
-.configs-main .configs-tree .li>.hideBox{
+
+.configs-main .configs-tree .li>.hideBox {
   position: absolute;
   top: 10px;
   right: 10px;
@@ -192,18 +201,22 @@ header {
   font-size: 12px;
   color: #999;
 }
-.configs-main .configs-tree .li>.hideBox::before{
+
+.configs-main .configs-tree .li>.hideBox::before {
   content: "收起";
 }
-.configs-main .configs-tree .li.hideChild>.hideBox::before{
+
+.configs-main .configs-tree .li.hideChild>.hideBox::before {
   content: "展开";
 }
-.configs-main .configs-tree .li.hideChild>.li{
+
+.configs-main .configs-tree .li.hideChild>.li {
   /*display: none;*/
   height: 0;
   padding: 0;
   border: 0;
 }
+
 .configs-main .configs-btns {
   padding-top: 5px;
   /*background: #fff;*/
@@ -232,14 +245,17 @@ header {
   cursor: pointer;
   opacity: 0.72;
 }
-.configs-main .configs-tree .li>.configs-btns button{
+
+.configs-main .configs-tree .li>.configs-btns button {
   height: 25px;
   width: 20px;
   transition: all .1s ease .2s;
 }
-.configs-main .configs-tree .li.active>.configs-btns button{
+
+.configs-main .configs-tree .li.active>.configs-btns button {
   width: 25px;
 }
+
 .configs-main .configs-btns button:hover {
   opacity: 1;
 }
@@ -251,9 +267,11 @@ header {
 .configs-main .configs-btns button.delete {
   background: #e91e63;
 }
+
 .configs-main .configs-btns button.update {
   background: #496be6;
 }
+
 .json-str {
   width: 100%;
 }

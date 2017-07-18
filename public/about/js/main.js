@@ -61,9 +61,10 @@
       var isRender = false;
       if (data.parentId) {
         if (json.id == data.parentId) {
-          data.id = guid();
-          delete data.parentId;
-          json.content.push(data);
+          var newData = tools.setAllData(newData, data);
+          newData.id = guid();
+          delete newData.parentId;
+          json.content.push(newData);
           isRender = true;
         } else {
           var l = json.content.length;
@@ -337,9 +338,22 @@
         case "downLast":
           tools.downLastData(data, userData);
           break;
+        case "copy":
+          self.setCopyData(data, userData);
+          break;
+        case "paste":
+          if(!self.copyData){
+            return;
+          }
+          self.copyData.parentId = data.id;
+          tools.setData(self.copyData, userData);
+          break;
         default:
           break;
       }
+    };
+    this.setCopyData = function(data){
+      this.copyData = tools.setAllData(this.copyData, data);
     };
     this.clickConfigs = function (e) {
       var target = e.target;
@@ -393,7 +407,7 @@
       newEl.setAttribute("v-id", json.id);
       newEl.innerHTML = "<div class='text'>" + this.getStr(json) + "</div>";
       el.append(newEl);
-      newEl.append(hideEl);
+      if (json.content.length > 0) newEl.append(hideEl);
       this.setBtns(newEl, json);
       this.data[json.id] = json;
       if (!json.content) return;
@@ -418,6 +432,8 @@
         this.setBtn(newEl, "↑", "up", json, "向上移");
         this.setBtn(newEl, "↓", "down", json, "向下移");
         this.setBtn(newEl, "↓↓", "downLast", json, "置底");
+        this.setBtn(newEl, "C", "copy", json, "复制该节点");
+        this.setBtn(newEl, "V", "paste", json, "黏贴到此节点中");
       }
     };
     this.setBtn = function (el, name, type, json, title) {

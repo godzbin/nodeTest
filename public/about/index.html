@@ -166,19 +166,19 @@
   <script src="./js/main.js">
   </script>
   <script>
-    // function setWidth() {
-    //   var width = document.getElementsByClassName("phone-box")[0].clientWidth;
-    //   var height = document.getElementsByClassName("phone-box")[0].clientHeight;
-    //   var new_width = 0;
-    //   if (width < height) {
-    //     new_width = width * (1 - (width / height - 375 / 590));
-    //   } else {
-    //     new_width = width;
-    //   }
-    //   var fontSize = new_width / 6.4;
-    //   document.getElementsByClassName("phone-box")[0].style.fontSize = fontSize + "px";
-    // }
-    // setWidth();
+    function setWidth() {
+      var width = document.getElementsByClassName("phone-box")[0].clientWidth;
+      var height = document.getElementsByClassName("phone-box")[0].clientHeight;
+      var new_width = 0;
+      if (width < height) {
+        new_width = width * (1 - (width / height - 375 / 590));
+      } else {
+        new_width = width;
+      }
+      var fontSize = new_width / 6.4;
+      document.getElementsByTagName("html")[0].style.fontSize = fontSize + "px";
+    }
+    setWidth();
   </script>
 </body>
 
