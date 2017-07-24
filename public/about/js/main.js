@@ -277,12 +277,39 @@
       };
     };
     this.downPage = function () {
-      var jsonStr = self.jsonStrEl.value;
+      // var jsonStr = self.jsonStrEl.value;
+      var jsonStr = JSON.stringify(self.getConfig({},userData)); 
+      var fileName = g("fileName").value || self.getTimeStr();
       if (isJSONStr(jsonStr)) {
-        downloadFile(self.getTimeStr() + ".js", "var aboutConfig=" + jsonStr);
+        downloadFile(fileName + ".js", "var aboutConfig=" + jsonStr);
       } else {
         alert("json格式有误");
       }
+    };
+    this.getConfig = function(result,obj){
+      var oClass = isClass(obj);
+      //确定result的类型
+      if (oClass === "Object") {
+        result = {};
+      } else if (oClass === "Array") {
+        result = [];
+      } else {
+        return obj;
+      }
+      for (key in obj) {
+        var copy = obj[key];
+        if (isClass(copy) == "Object") {
+          result[key] = arguments.callee(result[key], copy);//递归调用
+        } else if (isClass(copy) == "Array") {
+          result[key] = arguments.callee(result[key], copy);
+        } else if(obj[key] !== ""){
+          result[key] = obj[key];
+        }
+        if (key == "id") {
+          result[key] = guid();
+        }
+      }
+      return result;
     };
     this.getTimeStr = function () {
       var date = new Date();
