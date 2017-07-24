@@ -66,6 +66,7 @@
             <select class="value" v-name="className"> 
               <option value="">无</option>
               <option value="hideContent">点击隐藏下一个内容</option>
+              <option value="hideAll">点击隐藏全部</option>
             </select>
           </div>
           <div class="input-box span-10">
@@ -75,6 +76,10 @@
           <div class="input-box span-10">
             <label for="">图片地址:</label>
             <input type="text" class="value" v-name="src" value="">
+          </div>
+          <div class="input-box span-10">
+            <label for="">超链接地址:</label>
+            <input type="text" class="value" v-name="href" value="">
           </div>
           <div class=" input-box span-10">
             <strong>样式：</strong>
@@ -126,6 +131,10 @@
             <input type="text" class="value" v-style="borderColor" value="">
           </div>
           <div class="input-box span-3">
+            <label for="">圆角:</label>
+            <input type="text" class="value" v-style="borderRadius" value="">
+          </div>
+          <div class="input-box span-3">
             <label for="">边框样式:</label>
             <select class="value" v-style="borderStyle"> 
               <option value="">无</option>
@@ -141,6 +150,7 @@
               <option value="left">左</option>
               <option value="right">右</option>
               <option value="center">居中</option>
+              <option value="justify">左右对齐</option>
             </select>
           </div>
           <div class="input-box span-3">

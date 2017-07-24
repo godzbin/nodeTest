@@ -342,7 +342,7 @@
           self.setCopyData(data, userData);
           break;
         case "paste":
-          if(!self.copyData){
+          if (!self.copyData) {
             return;
           }
           self.copyData.parentId = data.id;
@@ -352,7 +352,7 @@
           break;
       }
     };
-    this.setCopyData = function(data){
+    this.setCopyData = function (data) {
       this.copyData = tools.setAllData(this.copyData, data);
     };
     this.clickConfigs = function (e) {
@@ -479,6 +479,17 @@
         if (nextEl && nextEl.style.display == "none") {
           nextEl.style.display = "block";
         } else if (nextEl) {
+          nextEl.style.display = "none";
+        }
+      } else if (target.className.indexOf("hideAll") > -1) {
+        self.hideAll();
+      }
+    };
+    this.hideAll = function () {
+      var boxs = g(".hideContent", self.phoneBox);
+      for (var i = 0, l = boxs.length; i < l; i++) {
+        var nextEl = boxs[i].nextSibling;
+        if(nextEl){
           nextEl.style.display = "none";
         }
       }
