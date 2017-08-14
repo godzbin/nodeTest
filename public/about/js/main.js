@@ -268,7 +268,7 @@
       }
       var script = dom.createElement("script");
       script.src = link;
-      document.body.append(script);
+      document.body.appendChild(script);
       script.onload = function () {
         if (typeof aboutConfig !== "Undefined") {
           userData = aboutConfig;
@@ -390,7 +390,7 @@
         }
         self.activeEl = target;
         self.activeEl.className += " active";
-        var _id = target.getAttribute("v-id");
+        var _id = target.getAttribute("id");
         var json = self.data[_id];
         self.activeJson = json;
         // self.setBtns(self.configsBtns, json);
@@ -431,10 +431,10 @@
         newEl.className += " hideChild";
       }
 
-      newEl.setAttribute("v-id", json.id);
+      newEl.id=json.id;
       newEl.innerHTML = "<div class='text'>" + this.getStr(json) + "</div>";
-      el.append(newEl);
-      if (json.content.length > 0) newEl.append(hideEl);
+      el.appendChild(newEl);
+      if (json.content.length > 0) newEl.appendChild(hideEl);
       this.setBtns(newEl, json);
       this.data[json.id] = json;
       if (!json.content) return;
@@ -446,7 +446,7 @@
     this.setBtns = function (el, json) {
       var newEl = dom.createElement("div");
       newEl.className = "configs-btns";
-      el.append(newEl);
+      el.appendChild(newEl);
       // el.innerHTML = "";
       if (json.type !== "img" && json.type !== "span") {
         this.setBtn(newEl, "＋", "add", json, "添加子节点");
@@ -471,7 +471,7 @@
       btn.setAttribute("v-type", type);
       btn.setAttribute("v-id", json.id);
       // btn.setAttribute("v-data", JSON.stringify(json));
-      el.append(btn);
+      el.appendChild(btn);
     };
     this.getStr = function (json) {
       var strArr = [];
@@ -484,6 +484,33 @@
       json.src && strArr.push("<p>图片：<img style='width:50px' src='" + json.src + "'></p>");
       return strArr.join("");
     };
+    this.getElementById = function(id){
+      var el = dom.getElementById(id);
+      console.dir(el);
+      this.clearElHide(el);
+      this.configBox.scrollTop = this.getOffsetTop(el)-300;
+      if(!this.activeEl){
+        this.activeEl = el;
+      }else{
+        this.activeEl.className = this.activeEl.className.replace(/active/g, "") ;
+        this.activeEl = el;
+      }
+      this.activeEl.className += " active"
+    };
+    this.clearElHide = function(el){
+      if(el.parentElement){
+        el.parentElement.className = el.parentElement.className.replace(/hideChild/g, "");
+        this.clearElHide(el.parentElement);
+      }
+    };
+    this.getOffsetTop = function(el, value){
+      value = value || 0;
+      value += el.offsetTop;
+      if(el.offsetParent){
+        value = this.getOffsetTop(el.offsetParent, value);
+      }
+      return value;
+    }
   };
   // 渲染手机
   function Phone() {
@@ -511,6 +538,15 @@
       } else if (target.className.indexOf("hideAll") > -1) {
         self.hideAll();
       }
+      var id = target.getAttribute("v-id");
+      if(!this.activeEl){
+        this.activeEl = target;
+      }else{
+        this.activeEl.style.outline = "0";
+        this.activeEl = target;
+      }
+      this.activeEl.style.outline = "1px red solid";
+      app.getElementById(id);
     };
     this.hideAll = function () {
       var boxs = g(".hideContent", self.phoneBox);
@@ -528,12 +564,16 @@
     this.setPhone = function (el, json) {
       var newEl = document.createElement(json.type);
       for (i in json) {
-        newEl[i] = json[i];
+        if(i==="id"){
+          newEl.setAttribute("v-id", json[i]);
+        }else{
+          newEl[i] = json[i];
+        }
       }
       for (i in json.style) {
         newEl.style[i] = json.style[i];
       }
-      el.append(newEl);
+      el.appendChild(newEl);
       if (json.type !== "img") {
         newEl.innerText = json.text || "";
       } else {
