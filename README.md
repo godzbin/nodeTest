@@ -1,2 +1,2 @@
-# nodeTest
-test,node
+# 配置工具
+配置静态页面配置的一个工具
