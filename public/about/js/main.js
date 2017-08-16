@@ -278,7 +278,7 @@
     };
     this.downPage = function () {
       // var jsonStr = self.jsonStrEl.value;
-      var jsonStr = JSON.stringify(self.getConfig({},userData)); 
+      var jsonStr = JSON.stringify(self.getConfig({}, userData));
       var fileName = g("fileName").value || self.getTimeStr();
       if (isJSONStr(jsonStr)) {
         downloadFile(fileName + ".js", "var aboutConfig=" + jsonStr);
@@ -286,7 +286,7 @@
         alert("json格式有误");
       }
     };
-    this.getConfig = function(result,obj){
+    this.getConfig = function (result, obj) {
       var oClass = isClass(obj);
       //确定result的类型
       if (oClass === "Object") {
@@ -302,7 +302,7 @@
           result[key] = arguments.callee(result[key], copy);//递归调用
         } else if (isClass(copy) == "Array") {
           result[key] = arguments.callee(result[key], copy);
-        } else if(obj[key] !== ""){
+        } else if (obj[key] !== "") {
           result[key] = obj[key];
         }
         if (key == "id") {
@@ -431,7 +431,7 @@
         newEl.className += " hideChild";
       }
 
-      newEl.id=json.id;
+      newEl.id = json.id;
       newEl.innerHTML = "<div class='text'>" + this.getStr(json) + "</div>";
       el.appendChild(newEl);
       if (json.content.length > 0) newEl.appendChild(hideEl);
@@ -484,29 +484,29 @@
       json.src && strArr.push("<p>图片：<img style='width:50px' src='" + json.src + "'></p>");
       return strArr.join("");
     };
-    this.getElementById = function(id){
+    this.getElementById = function (id) {
       var el = dom.getElementById(id);
       console.dir(el);
       this.clearElHide(el);
-      this.configBox.scrollTop = this.getOffsetTop(el)-300;
-      if(!this.activeEl){
+      this.configBox.scrollTop = this.getOffsetTop(el) - 300;
+      if (!this.activeEl) {
         this.activeEl = el;
-      }else{
-        this.activeEl.className = this.activeEl.className.replace(/active/g, "") ;
+      } else {
+        this.activeEl.className = this.activeEl.className.replace(/active/g, "");
         this.activeEl = el;
       }
       this.activeEl.className += " active"
     };
-    this.clearElHide = function(el){
-      if(el.parentElement){
+    this.clearElHide = function (el) {
+      if (el.parentElement) {
         el.parentElement.className = el.parentElement.className.replace(/hideChild/g, "");
         this.clearElHide(el.parentElement);
       }
     };
-    this.getOffsetTop = function(el, value){
+    this.getOffsetTop = function (el, value) {
       value = value || 0;
       value += el.offsetTop;
-      if(el.offsetParent){
+      if (el.offsetParent) {
         value = this.getOffsetTop(el.offsetParent, value);
       }
       return value;
@@ -539,9 +539,9 @@
         self.hideAll();
       }
       var id = target.getAttribute("v-id");
-      if(!this.activeEl){
+      if (!this.activeEl) {
         this.activeEl = target;
-      }else{
+      } else {
         this.activeEl.style.outline = "0";
         this.activeEl = target;
       }
@@ -552,7 +552,7 @@
       var boxs = g(".hideContent", self.phoneBox);
       for (var i = 0, l = boxs.length; i < l; i++) {
         var nextEl = boxs[i].nextSibling;
-        if(nextEl){
+        if (nextEl) {
           nextEl.style.display = "none";
         }
       }
@@ -564,9 +564,9 @@
     this.setPhone = function (el, json) {
       var newEl = document.createElement(json.type);
       for (i in json) {
-        if(i==="id"){
+        if (i === "id") {
           newEl.setAttribute("v-id", json[i]);
-        }else{
+        } else {
           newEl[i] = json[i];
         }
       }
